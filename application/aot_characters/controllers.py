@@ -13,8 +13,17 @@ def index():
     
 def show(name):
     try:
-        c = Character.query.filter_by(firstname=name.capitalize()).first()
-        # print(c.json)
+        c = Character.query.filter_by(firstname=name.capitalize()).first() or Character.query.filter_by(lastname=name.capitalize()).first()
         return jsonify({"data": c.json}), 200
     except:
         raise exceptions.NotFound("Character doesn't exist")
+
+def create():
+    try:
+        firstname, lastname, age, occupation = request.json.values()
+        new_c = Character(firstname=firstname, lastname=lastname, age=age, occupation=occupation)
+        db.session.add(new_c)
+        db.session.commit()
+        return jsonify({"data": new_c.json}), 201
+    except:
+        raise exceptions.InternalServerError(f"We cannot process your request. age, firstname, lastname and occupation are required and you only provided {new_c.json}")

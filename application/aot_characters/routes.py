@@ -1,11 +1,12 @@
 from flask import jsonify, request
 from werkzeug import exceptions
 from application import app
-from .controllers import index, show
+from .controllers import index, show, create
 
-@app.route("/aot_characters", methods= ["GET"])
+@app.route("/aot_characters", methods= ["GET", "POST"])
 def show_and_create():
     if request.method == "GET": return index()
+    if request.method == "POST": return create()
 
 @app.route("/aot_characters/<name>", methods=["GET"])
 def find_character(name):
