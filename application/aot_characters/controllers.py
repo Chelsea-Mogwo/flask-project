@@ -26,4 +26,20 @@ def create():
         db.session.commit()
         return jsonify({"data": new_c.json}), 201
     except:
-        raise exceptions.InternalServerError(f"We cannot process your request. age, firstname, lastname and occupation are required and you only provided {new_c.json}")
+        raise exceptions.InternalServerError(f"We cannot process your request. age, firstname, lastname and occupation are required and you only provided {new_c}")
+
+def update(id):
+    data = request.json
+    c = Character.query.filter_by(id=id).first()
+
+    for (attribute, value) in data.items():
+        if hasattr(c, attribute):
+            setattr(c, attribute, value)
+    db.session.commit()
+    return jsonify({"data": c.json})
+
+def delete(id):
+    c = Character.query.filter_by(id=id).first()
+    db.session.delete(c)
+    db.session.commit()
+    return f"Character Deleted", 204
