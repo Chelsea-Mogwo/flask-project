@@ -12,9 +12,15 @@ psycopg2 = "*"
 werkzeug = "*"
 
 [dev-packages]
+pytest = "*"
+pytest-cov = "*"
+pytest-watch = "*"
 
 [requires]
 python_version = "3.9"
 
 [scripts]
 dev = "flask run"
+seed = "python seed.py"
+test = "ptw -- --capture=tee-sys"
+coverage = "pytest --cov-report term-missing --cov=."
