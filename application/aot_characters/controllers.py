@@ -10,3 +10,11 @@ def index():
         return jsonify({"characters": data})
     except:
         raise exceptions.InternalServerError("We are working on it")
+    
+def show(name):
+    try:
+        c = Character.query.filter_by(firstname=name.capitalize()).first()
+        # print(c.json)
+        return jsonify({"data": c.json}), 200
+    except:
+        raise exceptions.NotFound("Character doesn't exist")
